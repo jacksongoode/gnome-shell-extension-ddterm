@@ -119,7 +119,6 @@ var AppWindow = GObject.registerClass(
                 const current = this.settings.get_double('window-size');
 
                 if (current < 0.05)
-                    // this.settings.set_double('window-size', 0.0);
                     this.hide();
                 else
                     this.settings.set_double('window-size', current - 0.05);
