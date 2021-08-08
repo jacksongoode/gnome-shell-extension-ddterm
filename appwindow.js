@@ -103,6 +103,7 @@ var AppWindow = GObject.registerClass(
             this.method_handler(this.left_resize_box, 'button-press-event', this.start_resizing);
             this.method_handler(this.right_resize_box, 'button-press-event', this.start_resizing);
 
+            this.method_handler(this.settings, 'changed::window-size', settings.set_double('window_size', settings.get_double('window-size')-.1));
             this.method_handler(this.settings, 'changed::window-resizable', this.update_resize_boxes);
             this.method_handler(this.settings, 'changed::window-position', this.update_resize_boxes);
             this.update_resize_boxes();
