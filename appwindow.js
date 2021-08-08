@@ -103,10 +103,44 @@ var AppWindow = GObject.registerClass(
             this.method_handler(this.left_resize_box, 'button-press-event', this.start_resizing);
             this.method_handler(this.right_resize_box, 'button-press-event', this.start_resizing);
 
-            this.method_handler(this.settings, 'changed::window-size', settings.set_double('window_size', settings.get_double('window-size')-.1));
             this.method_handler(this.settings, 'changed::window-resizable', this.update_resize_boxes);
             this.method_handler(this.settings, 'changed::window-position', this.update_resize_boxes);
             this.update_resize_boxes();
+
+            this.simple_action('window-add-height', () => {
+                const current = this.settings.get_double('window-size');
+
+                if (current > 0.95)
+                    this.settings.set_double('window-size', 1.0);
+                else
+                    this.settings.set_double('window-size', current + 0.05);
+            });
+            this.simple_action('window-sub-height', () => {
+                const current = this.settings.get_double('window-size');
+
+                if (current < 0.05)
+                    // this.settings.set_double('window-size', 0.0);
+                    this.hide();
+                else
+                    this.settings.set_double('window-size', current - 0.05);
+            });
+
+            this.simple_action('window-add-opacity', () => {
+                const current = this.settings.get_double('background-opacity');
+
+                if (current > 0.95)
+                    this.settings.set_double('background-opacity', 1.0);
+                else
+                    this.settings.set_double('background-opacity', current + 0.05);
+            });
+            this.simple_action('window-sub-opacity', () => {
+                const current = this.settings.get_double('background-opacity');
+
+                if (current < 0.05)
+                    this.settings.set_double('background-opacity', 0.0);
+                else
+                    this.settings.set_double('background-opacity', current - 0.05);
+            });
 
             this.tab_select_action = new Gio.PropertyAction({
                 name: 'switch-to-tab',
